@@ -1,8 +1,14 @@
-const  cloudinary = require('cloudinary');       
+const  cloudinary = require('cloudinary');   
+import dotenv from "dotenv"
+
+dotenv.config()
+const  cloud_name = process.env. cloud_name
+const  api_key = process.env. api_key
+const  api_secret = process.env. api_secret
 cloudinary.config({ 
-  cloud_name: 'dvhfu2a0u', 
-  api_key: '783233464721532', 
-  api_secret: 'FMTF5AKPFFPlL8re23Ly0yydF0I' 
+  cloud_name: cloud_name, 
+  api_key: api_key, 
+  api_secret: api_secret 
 });
 
 const uploader = async (file:any, res:any) => {
