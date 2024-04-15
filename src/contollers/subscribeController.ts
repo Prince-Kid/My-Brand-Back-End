@@ -1,30 +1,30 @@
-import { Request,Response } from "express";
-import nodemailer from "nodemailer"
+import { Request, Response } from "express";
+import nodemailer from "nodemailer";
 import SubscribeModule from "../modoles/subscribeModels";
-
-
+import dotenv from "dotenv";
+dotenv.config();
 const transporter = nodemailer.createTransport({
-    host:"smtp.gmail.com",
-    port : 587,
-    secure:false,
-    auth:{
-        user:"princemucyo12@gmail.com",
-        pass:"ojou yfon fhoq qpkj"
-    },
-    tls:{
-        rejectUnauthorized:false
-    }
-})
+  host: "smtp.gmail.com",
+  port: 587,
+  secure: false,
+  auth: {
+    user: process.env.user,
+    pass: process.env.pass,
+  },
+  tls: {
+    rejectUnauthorized: false,
+  },
+});
 
-export const subscribe = async (req:Request , res:Response): Promise <void> =>{
-try {
-const {email} = (req.body)
-await transporter.sendMail({
-    from: "princemucyo12@gmail.com",
-    to: email,
-    replyTo: "princemucyo12@gmail.com",
-    subject: `Welcome to My Blog Newsletter, ${email}`,
-    html: `
+export const subscribe = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { email } = req.body;
+    await transporter.sendMail({
+      from: "princemucyo12@gmail.com",
+      to: email,
+      replyTo: "princemucyo12@gmail.com",
+      subject: `Welcome to My Blog Newsletter, ${email}`,
+      html: `
         <div style="font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;">
             <div style="background-color: #ffffff; border-radius: 8px; padding: 20px;">
                 <h1 style="color: #333333;">Hello ${email},</h1>
@@ -39,13 +39,12 @@ await transporter.sendMail({
             </div>
             
         </div>
-    `
-});
+    `,
+    });
 
-  res.status(200).json("Message Sent!")
-  SubscribeModule.create({email})
-} catch (error) {
-    res.status(500).json({message:"Furebo"})
-}
-
-}
+    res.status(200).json("Message Sent!");
+    SubscribeModule.create({ email });
+  } catch (error) {
+    res.status(500).json({ message: "Furebo" });
+  }
+};
